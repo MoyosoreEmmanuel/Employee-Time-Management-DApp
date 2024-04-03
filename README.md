@@ -31,6 +31,8 @@ The TimeTracking contract is designed to provide efficient time tracking and man
 
 4. Compile and deploy the contract:
    ```bash
+   
+   //Edit config.js to use your metamask account.
    truffle compile
    truffle migrate --network sepolia
    ```
@@ -60,9 +62,7 @@ The TimeTracking contract is designed to provide efficient time tracking and man
 
 3. **Viewing Work Hours:** Employees and supervisors can view their total work hours, breaks, and overtime on the dashboard.
 
-4. **Payroll Calculation:** The contract automatically calculates payroll based on work hours and hourly rates configured during deployment.
-
-5. **Audit Log:** All actions performed within the contract are logged in the audit log section, providing transparency and accountability.
+4. **Audit Log:** All actions performed within the contract are logged in the audit log section, providing transparency and accountability.
 
 oject.
 ![image](https://github.com/MoyosoreEmmanuel/Employee-Time-Management-DApp/assets/164285349/cff3451b-90d8-4628-88cf-d0f8f88f560c)
