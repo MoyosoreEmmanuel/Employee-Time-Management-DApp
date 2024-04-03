@@ -1,0 +1,49 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #fff; /* Change the background color to white */
+}
+
+.employee-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    height: fit-content;
+    min-height: 100vh;
+}
+
+.employee-page h1 {
+    margin-top: 50px;
+    font-size: 2.5em;
+    color: #000; /* Change the color to black */
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 50px;
+}
+
+.button-container button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: #ddd; /* Change the button color to grey */
+    color: #000; /* Change the text color to black */
+}
+
+.button-container button:hover {
+    background-color: #bbb; /* Darken the button color when hovered */
+    color: #000; /* Keep the text color black when hovered */
+}
