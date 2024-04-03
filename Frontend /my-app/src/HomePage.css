@@ -1,0 +1,41 @@
+.homepage {
+    /* Adjust as needed */
+    width: 100%;
+    padding: 20px;
+}
+
+.vision-section {
+    /* Flexbox for side-by-side layout */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.vision-image {
+    /* Adjust as needed */
+    width: 45%;
+}
+
+.vision-image img {
+    /* To make sure the image fits inside the div */
+    width: 100%;
+    height: auto;
+}
+
+.vision-text {
+    /* Adjust as needed */
+    width: 45%;
+}
+
+.vision-text h2 {
+    /* Adjust as needed */
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.vision-text p {
+    /* Adjust as needed */
+    font-size: 16px;
+    line-height: 1.5;
+}

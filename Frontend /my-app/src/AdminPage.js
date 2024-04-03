@@ -5,12 +5,15 @@ import './AdminPage.css'; // Import the entire CSS file
 
 import GetEmployeeTotalHours from './getEmployeeTotalHours';
 import RemoveEmployee from './RemoveEmployee';
+import RemoveLocation from './RemoveLocation';
 import ListEmployees from './ListEmployees';
 import RevokeAuthentication from './RevokeAuthentication';
 import AuthenticateEmployee from './AuthenticateEmployee';
 import AddEmployee from './AddEmployee';
 import AddLocation from './AddLocation';
-import CalculatePayroll from './CalculatePayroll'; // Import the CalculatePayroll component
+
+import AddSupervisor from './AddSupervisor';
+import RemoveSupervisor from './RemoveSupervisor';
 
 const AdminPage = ({ contractInstance }) => {
   const [userIsOwner, setUserIsOwner] = useState(false);
@@ -36,28 +39,30 @@ const AdminPage = ({ contractInstance }) => {
   return (
     <div className="admin-page">
       <h1 className="admin-page-title">Admin Page</h1>
-      <div className="admin-page-section manage-employees">
+      <div className="admin-page-section">
         <h2>Manage Employees</h2>
         <AddEmployee contractInstance={contractInstance} />
-        <ListEmployees contractInstance={contractInstance} />
         <RemoveEmployee contractInstance={contractInstance} />
+        <ListEmployees contractInstance={contractInstance} />
       </div>
-      <div className="admin-page-section manage-locations">
+      <div className="admin-page-section">
         <h2>Manage Locations</h2>
         <AddLocation contractInstance={contractInstance} />
+        <RemoveLocation contractInstance={contractInstance} />
       </div>
-      <div className="admin-page-section authentication">
+      <div className="admin-page-section">
         <h2>Authentication</h2>
         <AuthenticateEmployee contractInstance={contractInstance} />
         <RevokeAuthentication contractInstance={contractInstance} />
       </div>
-      <div className="admin-page-section reports">
+      <div className="admin-page-section">
+        <h2>Supervisors</h2>
+        <AddSupervisor contractInstance={contractInstance} />
+        <RemoveSupervisor contractInstance={contractInstance} />
+      </div>
+      <div className="admin-page-section">
         <h2>Reports</h2>
         <GetEmployeeTotalHours contractInstance={contractInstance} />
-      </div>
-      <div className="admin-page-section payroll">
-        <h2>Payroll</h2>
-        <CalculatePayroll contractInstance={contractInstance} />
       </div>
     </div>
   );

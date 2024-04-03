@@ -9,8 +9,7 @@ contract TimeTracking {
     mapping(string => mapping(address => Employee)) private locationEmployees;
     mapping(address => bool) private authenticatedEmployees;
 
-    uint public hourlyRate;
-    uint public overtimeRate;
+ 
     address[] public employeeAddresses;
 
     enum EmployeeType { FullTime, PartTime, Contractor }
@@ -87,8 +86,6 @@ contract TimeTracking {
     constructor() {
         owner = msg.sender;
         supervisors[msg.sender] = true;
-        hourlyRate = 10; // $10 per hour
-        overtimeRate = 15; //
     }
  function isValidEthereumAddress(address _address) internal view returns (bool) {
     return (_address != address(0) && _address != address(this));
@@ -121,7 +118,19 @@ function addLocation(string calldata _locationName) external onlySupervisorOrOwn
     locations.push(_locationName);
     emit LocationAdded(_locationName);
 }
+function removeLocation(string calldata _locationName) external onlySupervisorOrOwner {
+    require(bytes(_locationName).length > 0, "Error: Location name cannot be empty");
+    require(locationExists(_locationName), "Error: Location does not exist");
 
+    for (uint i = 0; i < locations.length; i++) {
+        if (keccak256(abi.encodePacked(locations[i])) == keccak256(abi.encodePacked(_locationName))) {
+            locations[i] = locations[locations.length - 1];
+            locations.pop();
+            emit LocationRemoved(_locationName);
+            return;
+        }
+    }
+}
 function addEmployeeToLocation(address _employee, string calldata _locationName, EmployeeType _employeeType, string calldata _task, uint _requiredWorkHours) external onlySupervisorOrOwner {
     require(_employee != address(0), "Error: Invalid employee address");
     require(isValidEthereumAddress(_employee), "Error: Invalid Ethereum address");
@@ -149,7 +158,21 @@ function addEmployeeToLocation(address _employee, string calldata _locationName,
 
     emit EmployeeAddedToLocation(_employee, _locationName);
 }
-  
+    function addSupervisor(address _supervisor) external onlyOwner {
+    require(_supervisor != address(0), "Error: Invalid supervisor address");
+    require(isValidEthereumAddress(_supervisor), "Error: Invalid Ethereum address");
+    require(!supervisors[_supervisor], "Error: Supervisor already exists");
+    supervisors[_supervisor] = true;
+    emit SupervisorAdded(_supervisor);
+}
+
+function removeSupervisor(address _supervisor) external onlyOwner {
+    require(_supervisor != address(0), "Error: Invalid supervisor address");
+    require(isValidEthereumAddress(_supervisor), "Error: Invalid Ethereum address");
+    require(supervisors[_supervisor], "Error: Supervisor not found");
+    supervisors[_supervisor] = false;
+    emit SupervisorRemoved(_supervisor);
+}
 
 
 function authenticateEmployee(address _employee) external onlyOwner {
@@ -160,7 +183,16 @@ function authenticateEmployee(address _employee) external onlyOwner {
     emit EmployeeAuthenticated(_employee);
 }
 
+function removeEmployeeFromLocation(address _employee) external onlySupervisorOrOwner {
+    require(_employee != address(0), "Error: Invalid employee address");
 
+    string memory locationName = employeeLocations[_employee];
+    require(bytes(locationName).length > 0, "Error: Employee not associated with any location");
+
+    locationEmployees[locationName][_employee].isActive = false;
+
+    emit EmployeeRemovedFromLocation(_employee, locationName);
+}
 
 function revokeAuthentication(address _employee) external onlyOwner {
     require(_employee != address(0), "Error: Invalid employee address");
@@ -264,28 +296,6 @@ function endBreak() external onlyActiveEmployee {
     return (employee.totalHours, employee.totalMinutes, employee.totalSeconds);
 }
 
-function calculatePayroll(address _employee, uint _hourlyRate) external view returns (uint totalPay) {
-    string memory locationName = employeeLocations[_employee];
-    require(bytes(locationName).length > 0, "Error: Employee not associated with any location");
-
-    Employee storage employee = locationEmployees[locationName][_employee];
-    uint totalHours = employee.totalHours;
-    uint totalMinutes = employee.totalMinutes;
-    uint totalWorkTimeInMinutes = totalHours * 60 + totalMinutes;
-    totalPay = totalWorkTimeInMinutes * (_hourlyRate > 0 ? _hourlyRate : hourlyRate) / 60;
-
-    if (totalWorkTimeInMinutes > employee.requiredWorkHours * 60) {
-        uint overtimeMinutes = totalWorkTimeInMinutes - employee.requiredWorkHours * 60;
-        uint overtimePay = overtimeMinutes * overtimeRate / 60;
-        totalPay += overtimePay;
-    }
-
-    return totalPay;
-}
-
-
-
-
    
 function isOwner(address _address) public view returns (bool) {
     return _address == owner;
@@ -298,6 +308,10 @@ function isSupervisor(address _address) public view returns (bool) {
 function isEmployee(address _address) public view returns (bool) {
     return employees[_address];
 }
+
+
+
+
 
 
 function locationExists(string memory _locationName) public view returns (bool) {

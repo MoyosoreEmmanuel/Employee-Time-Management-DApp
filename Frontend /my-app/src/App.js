@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { contractInstance, initializeWeb3 } from './web3';
 import './App.css';
-import logo from './_6472f903-3f47-4bcf-b17a-fbbe76ad4590.jpeg';
+import logo from './georgie-cobbs-bKjHgo_Lbpo-unsplash_uw7bChv1.jpeg';
 
 import HomePage from './HomePage';
 import AdminPage from './AdminPage';
+import SupervisorPage from './SupervisorPage';
 import EmployeePage from './EmployeePage';
 
 const App = () => {
@@ -38,6 +39,7 @@ const App = () => {
               <a href="#">Pages</a>
               <div className="dropdown-content">
                 <Link to="/admin">Admin Page</Link>
+                <Link to="/supervisor">Supervisor Page</Link>
                 <Link to="/employee">Employee Page</Link>
               </div>
             </li>
@@ -47,6 +49,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<HomePage contractInstance={contractInstance} />} />
           <Route path="/admin" element={<AdminPage contractInstance={contractInstance} />} />
+          <Route path="/supervisor" element={<SupervisorPage contractInstance={contractInstance} />} />
           <Route path="/employee" element={<EmployeePage contractInstance={contractInstance} />} />
         </Routes>
       </div>
